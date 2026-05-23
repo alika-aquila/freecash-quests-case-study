@@ -1,4 +1,4 @@
-const basePath = process.env.NODE_ENV === 'production' ? '/freecash-quests-case-study' : '';
+const basePath = process.env.NEXT_PUBLIC_BASE_PATH ?? '';
 
 export function assetPath(src: string): string {
   return `${basePath}${src}`;

@@ -1,6 +1,6 @@
 import { Html, Head, Main, NextScript } from "next/document";
 
-const basePath = process.env.NODE_ENV === 'production' ? '/freecash-quests-case-study' : '';
+const basePath = process.env.NEXT_PUBLIC_BASE_PATH ?? '';
 
 export default function Document() {
   return (
