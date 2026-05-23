@@ -132,10 +132,10 @@ export function Navbar() {
                   py={2}
                   cursor="pointer"
                   transition="color 0.15s ease"
-                  color={isActive ? 'brand.green' : 'text.muted'}
+                  color={isActive ? 'text.white' : 'text.muted'}
                   fontWeight={isActive ? 600 : 500}
                   fontSize="14px"
-                  _hover={{ color: isActive ? 'brand.green' : 'text.white' }}
+                  _hover={{ color: 'text.white' }}
                   display="flex"
                   alignItems="center"
                   gap="6px"

@@ -132,6 +132,7 @@ export function QuestDrawer({ quest, onClose }: QuestDrawerProps) {
                       <Box
                         as="video"
                         src={assetPath(quest.drawerVideo)}
+                        poster={quest.iconImage ? assetPath(quest.iconImage) : undefined}
                         autoPlay
                         muted
                         playsInline

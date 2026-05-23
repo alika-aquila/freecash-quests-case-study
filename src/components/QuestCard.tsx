@@ -24,6 +24,7 @@ export function QuestCard({ quest, index, onClick }: QuestCardProps) {
   const ringDelayMs = 200 + index * 50;
   const hasImage = !!quest.iconImage;
   const hasHoverVideo = !!quest.hoverVideo;
+  const hasDrawerVideo = !!quest.drawerVideo;
 
   useEffect(() => {
     const video = videoRef.current;
@@ -35,6 +36,18 @@ export function QuestCard({ quest, index, onClick }: QuestCardProps) {
       video.pause();
     }
   }, [hovered]);
+
+  useEffect(() => {
+    if (!hovered || !hasDrawerVideo) return;
+    const link = document.createElement('link');
+    link.rel = 'preload';
+    link.as = 'video';
+    link.href = assetPath(quest.drawerVideo!);
+    document.head.appendChild(link);
+    return () => {
+      document.head.removeChild(link);
+    };
+  }, [hovered, hasDrawerVideo, quest.drawerVideo]);
 
   const handleClick = () => {
     if (!isCompleted && onClick) onClick(quest);
