@@ -62,7 +62,7 @@ export function QuestCard({ quest, index, onClick }: QuestCardProps) {
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
       onClick={handleClick}
-      whileHover={{ y: -4 }}
+      whileHover={{ y: -4, transition: { duration: 0.2, ease: 'easeOut', delay: 0 } }}
       cursor={isCompleted ? 'default' : 'pointer'}
       style={{ transformOrigin: 'center' }}
     >

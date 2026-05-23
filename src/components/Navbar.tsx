@@ -30,53 +30,74 @@ function Logo() {
         alt="Freecash"
         width={167}
         height={20}
-        style={{ height: '24px', width: 'auto' }}
+        style={{ height: '20px', width: 'auto' }}
         priority
       />
     </Box>
   );
 }
 
-function CoinBalance() {
+function CoinBalance({ onClick }: { onClick: () => void }) {
   return (
     <HStack
-      bg="bg.container"
-      borderRadius="full"
-      px={3}
-      py={1.5}
-      spacing={2}
-      border="1px solid"
-      borderColor="bg.border"
+      as="button"
+      onClick={onClick}
+      bg="rgba(1, 214, 118, 0.18)"
+      borderRadius="8px"
+      px="14px"
+      h="38px"
+      spacing="6px"
+      border="none"
+      cursor="pointer"
+      transition="background 0.15s ease"
+      _hover={{ bg: 'rgba(1, 214, 118, 0.26)' }}
     >
-      <Box w="18px" h="18px" borderRadius="full" bgGradient="linear(to-br, gold.light, gold.base)" />
-      <Text color="text.white" fontWeight={600} textStyle="textMd">
-        $0
+      <Text color="brand.green" fontWeight={700} fontSize="14px" lineHeight="1">
+        $
+      </Text>
+      <Text color="text.white" fontWeight={700} fontSize="14px" lineHeight="1">
+        0
       </Text>
     </HStack>
   );
 }
 
-function Avatar() {
+function ProfileChip({ onClick }: { onClick: () => void }) {
   return (
-    <Box
-      w="32px"
-      h="32px"
-      borderRadius="full"
-      bgGradient="linear(to-br, brand.green, brand.greenLight)"
-      border="2px solid"
-      borderColor="bg.container"
-    />
-  );
-}
-
-function BellIcon() {
-  return (
-    <Box as="svg" w="20px" h="20px" viewBox="0 0 24 24" fill="none" color="text.muted">
-      <path
-        d="M12 2a6 6 0 00-6 6v3.586L4.293 13.293A1 1 0 005 15h14a1 1 0 00.707-1.707L18 11.586V8a6 6 0 00-6-6zm0 20a3 3 0 003-3H9a3 3 0 003 3z"
-        fill="currentColor"
-      />
-    </Box>
+    <HStack
+      as="button"
+      onClick={onClick}
+      bg="#2F3043"
+      borderRadius="8px"
+      pl="4px"
+      pr="12px"
+      h="38px"
+      spacing="8px"
+      border="1px solid"
+      borderColor="transparent"
+      cursor="pointer"
+      transition="border-color 0.15s ease, background 0.15s ease"
+      _hover={{ borderColor: 'rgba(255,255,255,0.08)', bg: '#363751' }}
+    >
+      <Box
+        w="28px"
+        h="28px"
+        borderRadius="full"
+        bgGradient="linear(to-br, brand.green, brand.greenLight)"
+        display="flex"
+        alignItems="center"
+        justifyContent="center"
+        color="bg.page"
+        fontWeight={800}
+        fontSize="12px"
+        lineHeight="1"
+      >
+        L
+      </Box>
+      <Text color="#A9A9CA" fontWeight={500} fontSize="14px" lineHeight="1" fontFamily="Poppins, sans-serif">
+        Likka
+      </Text>
+    </HStack>
   );
 }
 
@@ -100,8 +121,7 @@ export function Navbar() {
     <Box
       as="header"
       bg="#1D1E30"
-      borderBottom="1px solid"
-      borderColor="bg.border"
+      boxShadow="0 2px 8px rgba(0, 0, 0, 0.08)"
       position="fixed"
       top={0}
       left={0}
@@ -109,14 +129,12 @@ export function Navbar() {
       zIndex={1000}
     >
       <Flex
-        maxW="1400px"
-        mx="auto"
         align="center"
         justify="space-between"
         px={{ base: 4, md: 6 }}
-        py={3}
+        py="14px"
       >
-        <HStack spacing={4} flex={1}>
+        <HStack spacing={4}>
           <Logo />
           {!isMobile && (
             <>
@@ -145,9 +163,9 @@ export function Navbar() {
                   <Image
                     src={icon}
                     alt=""
-                    width={24}
-                    height={24}
-                    style={{ width: '20px', height: '20px', opacity: isActive ? 1 : 0.85 }}
+                    width={28}
+                    height={28}
+                    style={{ width: '24px', height: '24px', opacity: isActive ? 1 : 0.85 }}
                   />
                   <Text as="span">{label}</Text>
                   {isActive && <ChevronDownIcon />}
@@ -171,14 +189,27 @@ export function Navbar() {
         </HStack>
 
         {!isMobile ? (
-          <HStack spacing={3}>
-            <CoinBalance />
-            <Avatar />
+          <HStack spacing="10px">
+            <CoinBalance onClick={openModal} />
+            <ProfileChip onClick={openModal} />
             <IconButton
               aria-label="Notifications"
-              icon={<BellIcon />}
+              onClick={openModal}
+              icon={
+                <Image
+                  src="/icon_notifications.png"
+                  alt=""
+                  width={20}
+                  height={20}
+                  style={{ width: '20px', height: '20px' }}
+                />
+              }
               variant="ghost"
               size="sm"
+              borderRadius="8px"
+              w="36px"
+              h="36px"
+              minW="36px"
               _hover={{ bg: 'bg.container' }}
             />
           </HStack>
