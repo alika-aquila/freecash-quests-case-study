@@ -36,11 +36,13 @@ export function QuestDrawer({ quest, onClose }: QuestDrawerProps) {
           zIndex={1500}
           bg="overlay"
           display="flex"
-          alignItems="flex-end"
+          alignItems={isMobile ? 'flex-end' : 'center'}
           justifyContent="center"
+          px={isMobile ? 0 : 4}
+          py={isMobile ? 0 : 6}
           initial={{ opacity: 0 }}
           animate={{ opacity: 1, backdropFilter: 'blur(8px)' }}
-          exit={{ opacity: 0 }}
+          exit={{ opacity: 0, transition: { duration: 0.15, ease: 'easeIn' } }}
           transition={{ duration: 0.25 }}
           onClick={onClose}
           style={{ backdropFilter: 'blur(8px)' }}
@@ -48,19 +50,24 @@ export function QuestDrawer({ quest, onClose }: QuestDrawerProps) {
           <MotionBox
             key="drawer-panel"
             onClick={(e: React.MouseEvent) => e.stopPropagation()}
+            position="relative"
             bg="bg.container"
             w="100%"
-            maxW={isMobile ? '100%' : '520px'}
-            h={isMobile ? '85vh' : 'auto'}
-            mb={isMobile ? 0 : 12}
+            maxW={isMobile ? '100%' : '560px'}
+            minH={isMobile ? 'auto' : '680px'}
+            maxH={isMobile ? '92vh' : '92vh'}
             borderTopRadius="20px"
             borderBottomRadius={isMobile ? 0 : '20px'}
             border="1px solid"
             borderColor="bg.border"
-            boxShadow="0 -20px 60px rgba(0,0,0,0.5)"
-            initial={{ y: '100%' }}
-            animate={{ y: 0 }}
-            exit={{ y: '100%' }}
+            boxShadow={isMobile ? '0 -20px 60px rgba(0,0,0,0.5)' : '0 24px 60px rgba(0,0,0,0.5)'}
+            initial={isMobile ? { y: '100%' } : { opacity: 0, y: 40, scale: 0.96 }}
+            animate={isMobile ? { y: 0 } : { opacity: 1, y: 0, scale: 1 }}
+            exit={
+              isMobile
+                ? { y: '100%', transition: { duration: 0.18, ease: 'easeIn' } }
+                : { opacity: 0, scale: 0.88, transition: { duration: 0.16, ease: 'easeIn' } }
+            }
             transition={{ type: 'spring', stiffness: 300, damping: 30 }}
             overflow="hidden"
             display="flex"
@@ -81,28 +88,35 @@ export function QuestDrawer({ quest, onClose }: QuestDrawerProps) {
                 size="sm"
                 variant="ghost"
                 color="text.muted"
+                bg="bg.container"
                 _hover={{ color: 'text.white', bg: 'bg.border' }}
                 icon={<CloseIcon />}
               />
             </Box>
 
-            <Box p={{ base: 6, md: 8 }} overflowY="auto">
-              <VStack spacing={5} align="stretch">
+            <Box
+              px={{ base: 6, md: 8 }}
+              pt={{ base: 14, md: 16 }}
+              pb={{ base: 6, md: 8 }}
+              overflowY="auto"
+              flex={1}
+            >
+              <VStack spacing={6} align="stretch">
                 {/* Icon */}
                 <Box display="flex" justifyContent="center">
                   <MotionBox
-                    w="96px"
-                    h="96px"
+                    w="220px"
+                    h="220px"
                     borderRadius="full"
                     bgGradient="linear(to-br, bg.elevated, #3A3A55)"
                     display="flex"
                     alignItems="center"
                     justifyContent="center"
-                    fontSize="48px"
+                    fontSize="108px"
                     lineHeight="1"
-                    initial={{ scale: 0, rotate: -20 }}
-                    animate={{ scale: 1, rotate: 0 }}
-                    transition={{ type: 'spring', stiffness: 280, damping: 14, delay: 0.1 }}
+                    initial={{ scale: 0.88, rotate: -4, opacity: 0 }}
+                    animate={{ scale: 1, rotate: 0, opacity: 1 }}
+                    transition={{ type: 'spring', stiffness: 220, damping: 20, delay: 0.08 }}
                   >
                     {quest.iconEmoji}
                   </MotionBox>
@@ -110,7 +124,7 @@ export function QuestDrawer({ quest, onClose }: QuestDrawerProps) {
 
                 {/* Name + description */}
                 <VStack spacing={2} textAlign="center">
-                  <Text color="text.white" textStyle="headingXs">
+                  <Text color="text.white" textStyle="headingSm">
                     {quest.name}
                   </Text>
                   <Text color="text.muted" textStyle="textMd">
@@ -169,17 +183,21 @@ export function QuestDrawer({ quest, onClose }: QuestDrawerProps) {
                 </Box>
 
                 {/* CTA */}
-                <Button
-                  size="lg"
-                  bg="brand.green"
-                  color="bg.page"
-                  fontWeight={700}
-                  borderRadius="12px"
-                  _hover={{ bg: 'brand.greenHover' }}
-                  _active={{ bg: 'brand.greenHover' }}
-                >
-                  {cta}
-                </Button>
+                <Box display="flex" justifyContent="center" pt={1}>
+                  <Button
+                    onClick={onClose}
+                    size="md"
+                    px={10}
+                    bg="brand.green"
+                    color="bg.page"
+                    fontWeight={700}
+                    borderRadius="10px"
+                    _hover={{ bg: 'brand.greenHover' }}
+                    _active={{ bg: 'brand.greenHover' }}
+                  >
+                    {cta}
+                  </Button>
+                </Box>
               </VStack>
             </Box>
           </MotionBox>

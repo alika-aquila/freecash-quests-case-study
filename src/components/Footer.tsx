@@ -1,4 +1,5 @@
 import { Box, Flex, HStack, Stack, Text, VStack } from '@chakra-ui/react';
+import Image from 'next/image';
 import { useCaseStudyModal } from './CaseStudyModal';
 
 const COLUMNS: { title: string; links: string[] }[] = [
@@ -26,10 +27,13 @@ export function Footer() {
           justify="space-between"
         >
           <VStack align="start" spacing={3}>
-            <Text fontWeight={800} fontSize="22px" letterSpacing="0.02em">
-              <Text as="span" color="brand.green">FREE</Text>
-              <Text as="span" color="text.white">CASH</Text>
-            </Text>
+            <Image
+              src="/logo.png"
+              alt="Freecash"
+              width={167}
+              height={20}
+              style={{ height: '24px', width: 'auto' }}
+            />
             <Text color="text.muted" textStyle="textSm" maxW="280px">
               Earn lottery tickets for completing quests, get rewarded weekly.
             </Text>

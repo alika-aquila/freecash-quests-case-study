@@ -26,7 +26,7 @@ export const quests: Quest[] = [
   {
     id: 'forms-slayer',
     name: "Form's Slayer",
-    description: 'Complete 8/2 Forms',
+    description: 'Complete 2/3 forms',
     reward: 90,
     progress: 60,
     iconEmoji: '📝',
@@ -35,7 +35,7 @@ export const quests: Quest[] = [
   {
     id: 'adventurer',
     name: 'Adventurer',
-    description: 'Try 8/3 categories',
+    description: 'Try 1/3 Categories',
     reward: 90,
     progress: 40,
     iconEmoji: '🗺️',
@@ -44,7 +44,7 @@ export const quests: Quest[] = [
   {
     id: 'streak-builder',
     name: 'Streak Builder',
-    description: 'Login for 8/7 days',
+    description: 'Login for 6/7 days',
     reward: 70,
     progress: 85,
     iconEmoji: '🔥',
@@ -72,7 +72,7 @@ export const quests: Quest[] = [
   {
     id: 'speed-runner',
     name: 'Speed Runner',
-    description: 'Finish 8/3 tasks in a row',
+    description: 'Finish 0/3 tasks in a row',
     reward: 80,
     iconEmoji: '⚡',
     category: 'milestone',

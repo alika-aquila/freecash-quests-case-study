@@ -3,25 +3,37 @@ import {
   Flex,
   HStack,
   Text,
-  Button,
   IconButton,
   useBreakpointValue,
 } from '@chakra-ui/react';
+import Image from 'next/image';
 import { useCaseStudyModal } from './CaseStudyModal';
 
-const NAV_LINKS = ['Earn', 'My Offers', 'Cashout', 'Rewards'] as const;
+interface NavLink {
+  label: string;
+  icon: string;
+}
+
+const NAV_LINKS: NavLink[] = [
+  { label: 'Earn', icon: '/icon_earn.png' },
+  { label: 'My Offers', icon: '/icon_offers.png' },
+  { label: 'Surveys', icon: '/icon_offers.png' },
+  { label: 'Cashout', icon: '/icon_cashout.png' },
+  { label: 'Rewards', icon: '/icon_rewards.png' },
+];
 
 function Logo() {
   return (
-    <Text
-      fontWeight={800}
-      fontSize="22px"
-      letterSpacing="0.02em"
-      userSelect="none"
-    >
-      <Text as="span" color="brand.green">FREE</Text>
-      <Text as="span" color="text.white">CASH</Text>
-    </Text>
+    <Box display="flex" alignItems="center" userSelect="none">
+      <Image
+        src="/logo.png"
+        alt="Freecash"
+        width={167}
+        height={20}
+        style={{ height: '24px', width: 'auto' }}
+        priority
+      />
+    </Box>
   );
 }
 
@@ -68,6 +80,14 @@ function BellIcon() {
   );
 }
 
+function ChevronDownIcon() {
+  return (
+    <Box as="svg" w="14px" h="14px" viewBox="0 0 24 24" fill="none" color="currentColor">
+      <path d="M6 9l6 6 6-6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+    </Box>
+  );
+}
+
 export function Navbar() {
   const { openModal } = useCaseStudyModal();
   const isMobile = useBreakpointValue({ base: true, md: false });
@@ -94,11 +114,13 @@ export function Navbar() {
         px={{ base: 4, md: 6 }}
         py={3}
       >
-        <Logo />
-
-        {!isMobile && (
-          <HStack spacing={2}>
-            {NAV_LINKS.map((label) => {
+        <HStack spacing={4} flex={1}>
+          <Logo />
+          {!isMobile && (
+            <>
+              <Box w="1px" h="24px" bg="bg.border" />
+              <HStack spacing={1}>
+            {NAV_LINKS.map(({ label, icon }) => {
               const isActive = label === 'Rewards';
               return (
                 <Box
@@ -106,23 +128,33 @@ export function Navbar() {
                   as="button"
                   onClick={() => handleNavClick(label)}
                   position="relative"
-                  px={4}
+                  px={3}
                   py={2}
                   cursor="pointer"
                   transition="color 0.15s ease"
                   color={isActive ? 'brand.green' : 'text.muted'}
                   fontWeight={isActive ? 600 : 500}
                   fontSize="14px"
-                  _hover={{ color: 'text.white' }}
+                  _hover={{ color: isActive ? 'brand.green' : 'text.white' }}
+                  display="flex"
+                  alignItems="center"
+                  gap="6px"
                 >
-                  {label}
+                  <Image
+                    src={icon}
+                    alt=""
+                    width={24}
+                    height={24}
+                    style={{ width: '20px', height: '20px', opacity: isActive ? 1 : 0.85 }}
+                  />
+                  <Text as="span">{label}</Text>
+                  {isActive && <ChevronDownIcon />}
                   {isActive && (
                     <Box
                       position="absolute"
                       bottom="-12px"
-                      left="50%"
-                      transform="translateX(-50%)"
-                      w="40%"
+                      left="10%"
+                      right="10%"
                       h="2px"
                       bg="brand.green"
                       borderRadius="full"
@@ -131,8 +163,10 @@ export function Navbar() {
                 </Box>
               );
             })}
-          </HStack>
-        )}
+              </HStack>
+            </>
+          )}
+        </HStack>
 
         {!isMobile ? (
           <HStack spacing={3}>

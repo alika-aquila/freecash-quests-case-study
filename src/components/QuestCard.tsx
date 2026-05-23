@@ -43,7 +43,8 @@ export function QuestCard({ quest, index, onClick }: QuestCardProps) {
         borderRadius="12px"
         border="1px solid"
         borderColor={hovered ? 'rgba(1,214,118,0.35)' : 'bg.border'}
-        p={4}
+        p={5}
+        pt={6}
         transition="border-color 0.2s ease, box-shadow 0.2s ease"
         boxShadow={hovered ? '0 8px 32px rgba(1, 214, 118, 0.15)' : 'none'}
         opacity={isLocked ? 0.6 : 1}
@@ -52,29 +53,29 @@ export function QuestCard({ quest, index, onClick }: QuestCardProps) {
       >
         <ParticleBurst active={isCompleted && hovered} />
 
-        <VStack spacing={3} align="center" textAlign="center">
+        <VStack spacing={4} align="center" textAlign="center">
           {/* Icon */}
-          <Box position="relative" w="72px" h="72px" display="flex" alignItems="center" justifyContent="center">
+          <Box position="relative" w="148px" h="148px" display="flex" alignItems="center" justifyContent="center">
             {hasProgress && !isCompleted && (
               <Box position="absolute" inset={0}>
                 <CircularProgress
                   value={quest.progress ?? 0}
-                  size={72}
-                  strokeWidth={4}
+                  size={148}
+                  strokeWidth={6}
                   showLabel={false}
                   delayMs={ringDelayMs}
                 />
               </Box>
             )}
             <MotionBox
-              w="52px"
-              h="52px"
+              w="116px"
+              h="116px"
               borderRadius="full"
               bgGradient="linear(to-br, bg.elevated, #3A3A55)"
               display="flex"
               alignItems="center"
               justifyContent="center"
-              fontSize="28px"
+              fontSize="64px"
               lineHeight="1"
               animate={{ scale: hovered && !isCompleted ? 1.08 : 1 }}
               transition={{ duration: 0.2, ease: 'easeInOut' }}
@@ -84,7 +85,7 @@ export function QuestCard({ quest, index, onClick }: QuestCardProps) {
           </Box>
 
           {/* Name */}
-          <Text color="text.white" fontWeight={700} textStyle="textMd" noOfLines={1}>
+          <Text color="text.white" fontWeight={700} fontSize="17px" lineHeight="22px" letterSpacing="0.01em" noOfLines={1}>
             {quest.name}
           </Text>
 
