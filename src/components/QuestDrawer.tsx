@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Box, Button, HStack, IconButton, Text, VStack, useBreakpointValue } from '@chakra-ui/react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { Quest } from '@/data/quests';
 import { TicketChip } from './TicketChip';
+import { assetPath } from '@/utils/assetPath';
 
 const MotionBox = motion.create(Box);
 
@@ -25,6 +26,11 @@ export function QuestDrawer({ quest, onClose }: QuestDrawerProps) {
   const hasProgress = quest && typeof quest.progress === 'number';
   const inProgress = hasProgress && progress > 0;
   const cta = inProgress ? 'Continue Quest' : 'Start Quest';
+  const [drawerVideoEnded, setDrawerVideoEnded] = useState(false);
+
+  useEffect(() => {
+    if (quest) setDrawerVideoEnded(false);
+  }, [quest?.id]);
 
   return (
     <AnimatePresence>
@@ -54,7 +60,7 @@ export function QuestDrawer({ quest, onClose }: QuestDrawerProps) {
             bg="bg.container"
             w="100%"
             maxW={isMobile ? '100%' : '560px'}
-            minH={isMobile ? 'auto' : '680px'}
+            minH={isMobile ? 'auto' : hasProgress ? '680px' : '610px'}
             maxH={isMobile ? '92vh' : '92vh'}
             borderTopRadius="20px"
             borderBottomRadius={isMobile ? 0 : '20px'}
@@ -96,19 +102,23 @@ export function QuestDrawer({ quest, onClose }: QuestDrawerProps) {
 
             <Box
               px={{ base: 6, md: 8 }}
-              pt={{ base: 14, md: 16 }}
-              pb={{ base: 6, md: 8 }}
+              pt={{ base: 10, md: 12 }}
+              pb={{ base: 7, md: 9 }}
               overflowY="auto"
               flex={1}
+              display="flex"
+              flexDirection="column"
             >
-              <VStack spacing={6} align="stretch">
+              <VStack spacing={6} align="stretch" flex={1}>
                 {/* Icon */}
                 <Box display="flex" justifyContent="center">
                   <MotionBox
+                    position="relative"
                     w="220px"
                     h="220px"
                     borderRadius="full"
-                    bgGradient="linear(to-br, bg.elevated, #3A3A55)"
+                    bgGradient={quest.drawerVideo || quest.iconImage ? undefined : 'linear(to-br, bg.elevated, #3A3A55)'}
+                    overflow="hidden"
                     display="flex"
                     alignItems="center"
                     justifyContent="center"
@@ -118,7 +128,35 @@ export function QuestDrawer({ quest, onClose }: QuestDrawerProps) {
                     animate={{ scale: 1, rotate: 0, opacity: 1 }}
                     transition={{ type: 'spring', stiffness: 220, damping: 20, delay: 0.08 }}
                   >
-                    {quest.iconEmoji}
+                    {quest.drawerVideo && !drawerVideoEnded ? (
+                      <Box
+                        as="video"
+                        src={assetPath(quest.drawerVideo)}
+                        autoPlay
+                        muted
+                        playsInline
+                        preload="auto"
+                        onEnded={() => setDrawerVideoEnded(true)}
+                        position="absolute"
+                        inset={0}
+                        w="100%"
+                        h="100%"
+                        sx={{ objectFit: 'contain' }}
+                      />
+                    ) : quest.iconImage ? (
+                      <Box
+                        as="img"
+                        src={assetPath(quest.iconImage)}
+                        alt=""
+                        position="absolute"
+                        inset={0}
+                        w="100%"
+                        h="100%"
+                        objectFit="contain"
+                      />
+                    ) : (
+                      quest.iconEmoji
+                    )}
                   </MotionBox>
                 </Box>
 
@@ -183,7 +221,7 @@ export function QuestDrawer({ quest, onClose }: QuestDrawerProps) {
                 </Box>
 
                 {/* CTA */}
-                <Box display="flex" justifyContent="center" pt={1}>
+                <Box display="flex" justifyContent="center" pt={1} mt="auto">
                   <Button
                     onClick={onClose}
                     size="md"

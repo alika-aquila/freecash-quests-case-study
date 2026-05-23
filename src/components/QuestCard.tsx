@@ -1,10 +1,11 @@
 import { Box, Button, Text, VStack } from '@chakra-ui/react';
 import { motion } from 'framer-motion';
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Quest } from '@/data/quests';
 import { CircularProgress } from './CircularProgress';
 import { TicketChip } from './TicketChip';
 import { ParticleBurst } from './ParticleBurst';
+import { assetPath } from '@/utils/assetPath';
 
 const MotionBox = motion.create(Box);
 
@@ -16,10 +17,24 @@ interface QuestCardProps {
 
 export function QuestCard({ quest, index, onClick }: QuestCardProps) {
   const [hovered, setHovered] = useState(false);
+  const videoRef = useRef<HTMLVideoElement | null>(null);
   const isCompleted = !!quest.completed;
   const hasProgress = typeof quest.progress === 'number';
   const isLocked = hasProgress && quest.progress === 0 && !isCompleted;
   const ringDelayMs = 200 + index * 50;
+  const hasImage = !!quest.iconImage;
+  const hasHoverVideo = !!quest.hoverVideo;
+
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video) return;
+    if (hovered) {
+      video.currentTime = 0;
+      void video.play().catch(() => {});
+    } else {
+      video.pause();
+    }
+  }, [hovered]);
 
   const handleClick = () => {
     if (!isCompleted && onClick) onClick(quest);
@@ -68,10 +83,12 @@ export function QuestCard({ quest, index, onClick }: QuestCardProps) {
               </Box>
             )}
             <MotionBox
-              w="116px"
-              h="116px"
+              position="relative"
+              w={hasProgress ? '116px' : '140px'}
+              h={hasProgress ? '116px' : '140px'}
               borderRadius="full"
-              bgGradient="linear(to-br, bg.elevated, #3A3A55)"
+              bgGradient={hasImage ? undefined : 'linear(to-br, bg.elevated, #3A3A55)'}
+              overflow="hidden"
               display="flex"
               alignItems="center"
               justifyContent="center"
@@ -80,7 +97,42 @@ export function QuestCard({ quest, index, onClick }: QuestCardProps) {
               animate={{ scale: hovered && !isCompleted ? 1.08 : 1 }}
               transition={{ duration: 0.2, ease: 'easeInOut' }}
             >
-              {quest.iconEmoji}
+              {hasImage ? (
+                <>
+                  <Box
+                    as="img"
+                    src={assetPath(quest.iconImage!)}
+                    alt=""
+                    position="absolute"
+                    inset={0}
+                    w="100%"
+                    h="100%"
+                    objectFit="contain"
+                    opacity={hovered && hasHoverVideo ? 0 : 1}
+                    transition="opacity 0.18s ease"
+                  />
+                  {hasHoverVideo && (
+                    <Box
+                      as="video"
+                      ref={videoRef as React.RefObject<HTMLVideoElement>}
+                      src={assetPath(quest.hoverVideo!)}
+                      muted
+                      loop
+                      playsInline
+                      preload="auto"
+                      position="absolute"
+                      inset={0}
+                      w="100%"
+                      h="100%"
+                      sx={{ objectFit: 'contain' }}
+                      opacity={hovered ? 1 : 0}
+                      transition="opacity 0.18s ease"
+                    />
+                  )}
+                </>
+              ) : (
+                quest.iconEmoji
+              )}
             </MotionBox>
           </Box>
 

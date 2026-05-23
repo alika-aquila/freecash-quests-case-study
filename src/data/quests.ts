@@ -9,6 +9,12 @@ export interface Quest {
   completed?: boolean;
   iconEmoji: string;
   iconSrc?: string;
+  /** Path to a static image for the icon (overrides emoji when present). */
+  iconImage?: string;
+  /** Path to a short video played on card hover. */
+  hoverVideo?: string;
+  /** Path to a video played inside the open quest drawer. */
+  drawerVideo?: string;
   category: QuestCategory;
 }
 
@@ -21,6 +27,9 @@ export const quests: Quest[] = [
     reward: 100,
     progress: 25,
     iconEmoji: '🧭',
+    iconImage: '/quest-asset-explorer.png',
+    hoverVideo: '/quest-asset-explorer_anim_hover.mp4',
+    drawerVideo: '/quest-asset-explorer_anim_open.mp4',
     category: 'engagement',
   },
   {
@@ -28,8 +37,11 @@ export const quests: Quest[] = [
     name: "Form's Slayer",
     description: 'Complete 2/3 forms',
     reward: 90,
-    progress: 60,
+    progress: 67,
     iconEmoji: '📝',
+    iconImage: '/quest-asset-forms.png',
+    hoverVideo: '/quest-asset-forms_hover.mp4',
+    drawerVideo: '/quest-asset-forms_open.mp4',
     category: 'engagement',
   },
   {
@@ -37,8 +49,11 @@ export const quests: Quest[] = [
     name: 'Adventurer',
     description: 'Try 1/3 Categories',
     reward: 90,
-    progress: 40,
+    progress: 33,
     iconEmoji: '🗺️',
+    iconImage: '/quest-asset-adventurer.png',
+    hoverVideo: '/quest-asset-adventurer_hover.mp4',
+    drawerVideo: '/quest-asset-adventurer_open.mp4',
     category: 'engagement',
   },
   {
@@ -46,8 +61,11 @@ export const quests: Quest[] = [
     name: 'Streak Builder',
     description: 'Login for 6/7 days',
     reward: 70,
-    progress: 85,
+    progress: 86,
     iconEmoji: '🔥',
+    iconImage: '/quest-asset-streak.png',
+    hoverVideo: '/quest-asset-streak_hover.mp4',
+    drawerVideo: '/quest-asset-streak_open.mp4',
     category: 'engagement',
   },
   {
@@ -57,6 +75,9 @@ export const quests: Quest[] = [
     reward: 50,
     progress: 0,
     iconEmoji: '🗝️',
+    iconImage: '/quest-asset-key.png',
+    hoverVideo: '/quest-asset-key_hover.mp4',
+    drawerVideo: '/quest-asset-key_open.mp4',
     category: 'engagement',
   },
 
@@ -67,6 +88,9 @@ export const quests: Quest[] = [
     description: 'Invite a friend',
     reward: 50,
     iconEmoji: '👥',
+    iconImage: '/quest-asset-popular.png',
+    hoverVideo: '/quest-asset-popular_hover.mp4',
+    drawerVideo: '/quest-asset-popular_open.mp4',
     category: 'milestone',
   },
   {
@@ -75,6 +99,9 @@ export const quests: Quest[] = [
     description: 'Finish 0/3 tasks in a row',
     reward: 80,
     iconEmoji: '⚡',
+    iconImage: '/quest-asset-speed.png',
+    hoverVideo: '/quest-asset-speed_hover.mp4',
+    drawerVideo: '/quest-asset-speed_open.mp4',
     category: 'milestone',
   },
   {
@@ -83,6 +110,9 @@ export const quests: Quest[] = [
     description: 'First withdrawal',
     reward: 50,
     iconEmoji: '💸',
+    iconImage: '/quest-asset-cashout.png',
+    hoverVideo: '/quest-asset-cashout_hover.mp4',
+    drawerVideo: '/quest-asset-cashout_open.mp4',
     category: 'milestone',
   },
   {
@@ -91,6 +121,9 @@ export const quests: Quest[] = [
     description: 'Withdraw $50',
     reward: 100,
     iconEmoji: '💰',
+    iconImage: '/quest-asset-earner.png',
+    hoverVideo: '/quest-asset-earner_hover.mp4',
+    drawerVideo: '/quest-asset-earner_open.mp4',
     category: 'milestone',
   },
   {
@@ -99,6 +132,9 @@ export const quests: Quest[] = [
     description: 'Withdraw $100',
     reward: 200,
     iconEmoji: '🎰',
+    iconImage: '/quest-asset-roller.png',
+    hoverVideo: '/quest-asset-roller_hover.mp4',
+    drawerVideo: '/quest-asset-roller_open.mp4',
     category: 'milestone',
   },
 
@@ -110,6 +146,7 @@ export const quests: Quest[] = [
     reward: 25,
     completed: true,
     iconEmoji: '📸',
+    iconImage: '/quest-asset-instagram.png',
     category: 'social',
   },
   {
@@ -119,6 +156,7 @@ export const quests: Quest[] = [
     reward: 25,
     completed: true,
     iconEmoji: '🎵',
+    iconImage: '/quest-asset-tiktok.png',
     category: 'social',
   },
   {
@@ -128,6 +166,7 @@ export const quests: Quest[] = [
     reward: 25,
     completed: true,
     iconEmoji: '✖️',
+    iconImage: '/quest-asset-x.png',
     category: 'social',
   },
   {
@@ -137,6 +176,7 @@ export const quests: Quest[] = [
     reward: 25,
     completed: true,
     iconEmoji: '📺',
+    iconImage: '/quest-asset-youtube.png',
     category: 'social',
   },
   {
@@ -146,6 +186,7 @@ export const quests: Quest[] = [
     reward: 25,
     completed: true,
     iconEmoji: '💬',
+    iconImage: '/quest-asset-discord.png',
     category: 'social',
   },
 ];

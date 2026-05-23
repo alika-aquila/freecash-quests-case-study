@@ -1,4 +1,5 @@
-import { HStack, Text } from '@chakra-ui/react';
+import { Box, HStack, Text } from '@chakra-ui/react';
+import { assetPath } from '@/utils/assetPath';
 
 interface TicketChipProps {
   amount: number;
@@ -17,7 +18,7 @@ export function TicketChip({ amount, bright = false }: TicketChipProps) {
       borderRadius="full"
       transition="all 0.2s ease"
     >
-      <Text fontSize="13px" lineHeight="1">🎟</Text>
+      <Box as="img" src={assetPath('/icon_ticket.png')} alt="" w="16px" h="16px" objectFit="contain" />
       <Text color="gold.base" fontWeight={700} textStyle="textSm">
         +{amount}
       </Text>

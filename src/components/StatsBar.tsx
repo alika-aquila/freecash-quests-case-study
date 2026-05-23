@@ -1,6 +1,7 @@
 import { Box, HStack, Text } from '@chakra-ui/react';
 import { motion } from 'framer-motion';
 import { CountUp } from './CountUp';
+import { assetPath } from '@/utils/assetPath';
 
 const MotionHStack = motion.create(HStack);
 
@@ -30,7 +31,7 @@ function Chip({
       py={2}
       spacing={2}
     >
-      <Text fontSize="18px" lineHeight="1">{icon}</Text>
+      <Box as="img" src={assetPath(icon)} alt="" w="20px" h="20px" objectFit="contain" />
       <Text color={color} fontWeight={700} textStyle="textLg">
         <CountUp to={value} />
       </Text>
@@ -50,8 +51,8 @@ export function StatsBar({ tickets, questsCompleted }: StatsBarProps) {
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5, delay: 0.1, ease: 'easeOut' }}
     >
-      <Chip icon="🎟" value={tickets} label="Tickets" color="gold.base" />
-      <Chip icon="✅" value={questsCompleted} label="Quests completed" color="brand.green" />
+      <Chip icon="/icon_ticket.png" value={tickets} label="Tickets" color="gold.base" />
+      <Chip icon="/icon_check.png" value={questsCompleted} label="Quests completed" color="brand.green" />
     </MotionHStack>
   );
 }
