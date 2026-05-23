@@ -123,6 +123,7 @@ export const quests: Quest[] = [
     iconEmoji: '💰',
     iconImage: '/quest-asset-earner.png',
     hoverVideo: '/quest-asset-earner_hover.mp4',
+    drawerVideo: '/quest-asset-earner_open.mp4',
     category: 'milestone',
   },
   {
@@ -132,6 +133,8 @@ export const quests: Quest[] = [
     reward: 200,
     iconEmoji: '🎰',
     iconImage: '/quest-asset-roller.png',
+    hoverVideo: '/quest-asset-roller_hover.mp4',
+    drawerVideo: '/quest-asset-roller_open.mp4',
     category: 'milestone',
   },
 
