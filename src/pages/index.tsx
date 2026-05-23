@@ -22,6 +22,7 @@ export default function Home() {
 
       <Box minH="100vh" bg="bg.page" display="flex" flexDirection="column">
         <Navbar />
+        <Box h="65px" flexShrink={0} aria-hidden />
 
         <Box flex={1} as="main">
           <Box maxW="1400px" mx="auto" px={{ base: 4, md: 6 }} py={{ base: 6, md: 10 }}>
