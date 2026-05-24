@@ -1,6 +1,7 @@
 import { Box, SimpleGrid, Text } from '@chakra-ui/react';
 import { Quest } from '@/data/quests';
 import { QuestCard } from './QuestCard';
+import { MobileQuestCarousel } from './MobileQuestCarousel';
 
 interface QuestGridProps {
   quests: Quest[];
@@ -35,7 +36,19 @@ export function QuestGrid({ quests, onQuestClick }: QuestGridProps) {
             <Box flex={1} h="1px" bg="bg.border" />
           </Box>
         )}
+
+        {/* Mobile: carousel */}
+        <Box display={{ base: 'block', md: 'none' }} mx={-4}>
+          <MobileQuestCarousel
+            quests={sectionQuests}
+            startIndex={startIndex}
+            onQuestClick={onQuestClick}
+          />
+        </Box>
+
+        {/* Tablet/desktop: grid */}
         <SimpleGrid
+          display={{ base: 'none', md: 'grid' }}
           columns={{ base: 2, md: 3, lg: 5 }}
           spacing={{ base: '10px', md: '12px', lg: '16px' }}
         >

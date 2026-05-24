@@ -13,10 +13,13 @@ interface QuestCardProps {
   quest: Quest;
   index: number;
   onClick?: (quest: Quest) => void;
+  /** When true, forces the hover state on (loops hover video, scales icon). Used by mobile carousel for the centered card. */
+  autoplay?: boolean;
 }
 
-export function QuestCard({ quest, index, onClick }: QuestCardProps) {
-  const [hovered, setHovered] = useState(false);
+export function QuestCard({ quest, index, onClick, autoplay = false }: QuestCardProps) {
+  const [pointerHovered, setPointerHovered] = useState(false);
+  const hovered = pointerHovered || autoplay;
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const isCompleted = !!quest.completed;
   const hasProgress = typeof quest.progress === 'number';
@@ -59,8 +62,8 @@ export function QuestCard({ quest, index, onClick }: QuestCardProps) {
       initial={{ opacity: 0, scale: 0.92, y: 20 }}
       animate={{ opacity: 1, scale: 1, y: 0 }}
       transition={{ duration: 0.4, delay: index * 0.05, ease: 'easeOut' }}
-      onMouseEnter={() => setHovered(true)}
-      onMouseLeave={() => setHovered(false)}
+      onMouseEnter={() => setPointerHovered(true)}
+      onMouseLeave={() => setPointerHovered(false)}
       onClick={handleClick}
       whileHover={{ y: -4, transition: { duration: 0.2, ease: 'easeOut', delay: 0 } }}
       cursor={isCompleted ? 'default' : 'pointer'}
@@ -74,7 +77,14 @@ export function QuestCard({ quest, index, onClick }: QuestCardProps) {
         p={5}
         pt={6}
         transition="border-color 0.2s ease, box-shadow 0.2s ease"
-        boxShadow={hovered ? '0 8px 32px rgba(1, 214, 118, 0.15)' : 'none'}
+        boxShadow={
+          hovered
+            ? {
+                base: '0 4px 16px rgba(1, 214, 118, 0.22)',
+                md: '0 8px 32px rgba(1, 214, 118, 0.15)',
+              }
+            : 'none'
+        }
         opacity={isLocked ? 0.6 : 1}
         position="relative"
         overflow="hidden"
