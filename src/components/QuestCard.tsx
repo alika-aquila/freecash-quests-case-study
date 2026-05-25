@@ -15,9 +15,17 @@ interface QuestCardProps {
   onClick?: (quest: Quest) => void;
   /** When true, forces the hover state on (loops hover video, scales icon). Used by mobile carousel for the centered card. */
   autoplay?: boolean;
+  /** When true, skip the fade-in/scale-up entry animation. Used by mobile carousel where the entry animation reads as a glitch on the focal card. */
+  disableEnterAnimation?: boolean;
 }
 
-export function QuestCard({ quest, index, onClick, autoplay = false }: QuestCardProps) {
+export function QuestCard({
+  quest,
+  index,
+  onClick,
+  autoplay = false,
+  disableEnterAnimation = false,
+}: QuestCardProps) {
   const [pointerHovered, setPointerHovered] = useState(false);
   const hovered = pointerHovered || autoplay;
   const videoRef = useRef<HTMLVideoElement | null>(null);
@@ -59,7 +67,7 @@ export function QuestCard({ quest, index, onClick, autoplay = false }: QuestCard
   return (
     <MotionBox
       position="relative"
-      initial={{ opacity: 0, scale: 0.92, y: 20 }}
+      initial={disableEnterAnimation ? false : { opacity: 0, scale: 0.92, y: 20 }}
       animate={{ opacity: 1, scale: 1, y: 0 }}
       transition={{ duration: 0.4, delay: index * 0.05, ease: 'easeOut' }}
       onMouseEnter={() => setPointerHovered(true)}

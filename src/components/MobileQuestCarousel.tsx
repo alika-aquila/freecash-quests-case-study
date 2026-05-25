@@ -27,6 +27,7 @@ export function MobileQuestCarousel({ quests, startIndex, onQuestClick }: Mobile
   // Pointer-drag state (mouse/pen only — touch uses native momentum scroll)
   const isDraggingRef = useRef(false);
   const didDragRef = useRef(false);
+  const isCapturingRef = useRef(false);
   const dragStartXRef = useRef(0);
   const dragStartScrollLeftRef = useRef(0);
 
@@ -57,6 +58,12 @@ export function MobileQuestCarousel({ quests, startIndex, onQuestClick }: Mobile
   }, [updateActiveFromScroll]);
 
   useEffect(() => {
+    // Ensure we start on the first card. Some mobile browsers restore an
+    // inner-scroll position on reload, which would render the carousel
+    // mid-scroll on mount.
+    if (scrollRef.current) {
+      scrollRef.current.scrollLeft = 0;
+    }
     return () => {
       if (rafRef.current !== null) cancelAnimationFrame(rafRef.current);
     };
@@ -77,11 +84,12 @@ export function MobileQuestCarousel({ quests, startIndex, onQuestClick }: Mobile
     if (!el) return;
     isDraggingRef.current = true;
     didDragRef.current = false;
+    isCapturingRef.current = false;
     dragStartXRef.current = e.clientX;
     dragStartScrollLeftRef.current = el.scrollLeft;
-    try {
-      el.setPointerCapture(e.pointerId);
-    } catch {}
+    // NOTE: don't setPointerCapture here. Capturing the pointer redirects
+    // the trailing `click` event to the scroll container, which would
+    // swallow taps on the cards. We only capture once a real drag starts.
   };
 
   const handlePointerMove = (e: React.PointerEvent<HTMLDivElement>) => {
@@ -89,17 +97,30 @@ export function MobileQuestCarousel({ quests, startIndex, onQuestClick }: Mobile
     const el = scrollRef.current;
     if (!el) return;
     const dx = e.clientX - dragStartXRef.current;
-    if (Math.abs(dx) > 4) didDragRef.current = true;
-    el.scrollLeft = dragStartScrollLeftRef.current - dx;
+    if (Math.abs(dx) > 4 && !didDragRef.current) {
+      didDragRef.current = true;
+      // Now that the user is genuinely dragging, capture so we keep
+      // receiving move events even if the pointer leaves the container.
+      try {
+        el.setPointerCapture(e.pointerId);
+        isCapturingRef.current = true;
+      } catch {}
+    }
+    if (didDragRef.current) {
+      el.scrollLeft = dragStartScrollLeftRef.current - dx;
+    }
   };
 
   const endPointerDrag = (e: React.PointerEvent<HTMLDivElement>) => {
     if (!isDraggingRef.current) return;
     isDraggingRef.current = false;
-    const el = scrollRef.current;
-    try {
-      el?.releasePointerCapture(e.pointerId);
-    } catch {}
+    if (isCapturingRef.current) {
+      const el = scrollRef.current;
+      try {
+        el?.releasePointerCapture(e.pointerId);
+      } catch {}
+      isCapturingRef.current = false;
+    }
   };
 
   // Suppress the synthetic click that fires after a drag
@@ -157,6 +178,7 @@ export function MobileQuestCarousel({ quests, startIndex, onQuestClick }: Mobile
                 index={startIndex + i}
                 autoplay={isActive}
                 onClick={isActive ? onQuestClick : undefined}
+                disableEnterAnimation
               />
             </Box>
           );
